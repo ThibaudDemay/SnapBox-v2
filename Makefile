@@ -7,13 +7,13 @@ RESET  := $(shell tput -Txterm sgr0)
 styles:
 	black ./snapbox
 	isort ./snapbox
-	flake8
+	pflake8
 
 ## Check if styles was correct (black, isort, flake8)
 styles_check:
 	black ./snapbox --check
 	isort ./snapbox --check-only
-	flake8
+	pflake8
 
 ## Show this help
 help:
