@@ -2,11 +2,8 @@ import json
 import os
 import shutil
 
-import tornado.web
-from tornado import gen, iostream
-from tornado.web import HTTPError
-
 from endpoint.base import BaseHandler
+from tornado import gen
 
 
 class ConfigHandler(BaseHandler):

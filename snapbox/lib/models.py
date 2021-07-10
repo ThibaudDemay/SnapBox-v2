@@ -8,11 +8,10 @@
 # Copyright (c) 2019-2020 Thibaud Demay
 # Show license file in root folder.
 
+from lib import database as db
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from sqlalchemy import Column, DateTime, Integer, String
 from sqlalchemy.sql import func
-
-from lib import database as db
 
 
 class Picture(db.Base):

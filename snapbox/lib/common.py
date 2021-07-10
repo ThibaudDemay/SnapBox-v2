@@ -6,6 +6,7 @@ import sys
 
 from lib import default_settings_cfgfile
 
+
 class ConfigFile(object):
     instance = None
 

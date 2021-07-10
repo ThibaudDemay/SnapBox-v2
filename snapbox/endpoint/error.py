@@ -2,10 +2,9 @@
 ErrorHandler
 """
 
-from tornado.web import ErrorHandler
-
 import exception as exception
 from endpoint.base import BaseHandler
+from tornado.web import ErrorHandler
 
 
 class ErrorBadUriHandler(ErrorHandler, BaseHandler):

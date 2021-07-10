@@ -11,10 +11,9 @@
 import logging
 
 import sqlalchemy as db
+from lib.common import ConfigFile
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.pool import SingletonThreadPool  # NullPool, QueuePool
-
-from lib.common import ConfigFile
 
 Base = declarative_base()
 

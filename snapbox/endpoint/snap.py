@@ -2,11 +2,10 @@ import json
 import logging
 import os
 
-from PIL import ExifTags, Image
-from tornado import gen
-
 from endpoint.base import BaseHandler
 from lib.models import PictureSchema
+from PIL import ExifTags, Image
+from tornado import gen
 
 picture_schema = PictureSchema()
 
@@ -44,6 +43,7 @@ class SnapHandler(BaseHandler):
                 image = image.rotate(90, expand=True)
         except Exception as exc:
             logging.info("pictures does not have exif for orientation")
+            logging.error(exc)
 
         image.thumbnail(size)
         photo_thumb_path = os.path.join(self.thumbnails_path, filename)

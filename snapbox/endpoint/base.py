@@ -2,12 +2,11 @@
 BaseHandler
 """
 
+import exception as exception
 from tornado import gen
 from tornado.log import app_log
 from tornado.web import RequestHandler
 from tornado.websocket import WebSocketHandler
-
-import exception as exception
 
 
 class BaseHandler(RequestHandler):

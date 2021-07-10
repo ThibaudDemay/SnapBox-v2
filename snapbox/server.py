@@ -3,12 +3,6 @@ import logging
 import os
 
 from docopt import docopt
-from pyudev import Context, Monitor, MonitorObserver
-from tornado import httpserver, ioloop
-from tornado.log import access_log
-from tornado.platform.asyncio import AnyThreadEventLoopPolicy
-from tornado.web import Application, RequestHandler
-
 from endpoint.assets import AssetsHandler
 from endpoint.config import ConfigHandler
 from endpoint.error import ErrorBadUriHandler
@@ -18,6 +12,11 @@ from lib.camera import Camera
 from lib.common import ConfigFile, json2obj
 from lib.database import DatabaseManager
 from lib.picture import PictureManager
+from pyudev import Context, Monitor, MonitorObserver
+from tornado import httpserver, ioloop
+from tornado.log import access_log
+from tornado.platform.asyncio import AnyThreadEventLoopPolicy
+from tornado.web import Application, RequestHandler
 
 
 class SnapBoxServer(Application):

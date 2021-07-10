@@ -1,11 +1,8 @@
-import json
 import mimetypes
-
-import tornado.web
-from tornado.web import HTTPError
 
 from endpoint.base import BaseHandler
 from lib.models import Picture
+from tornado.web import HTTPError
 
 
 class AssetsHandler(BaseHandler):
