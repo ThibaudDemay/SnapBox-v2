@@ -126,10 +126,10 @@ class Camera:
         self._camera.file_delete(path.folder, path.name)
 
         thumb_path = os.path.join(self.thumbnails_path, name)
-        self.pm.addPicture(name, pics_path, thumb_path)
+        picture = self.pm.addPicture(name, pics_path, thumb_path)
 
         # reset conf
         ct_cfg.set_value(ct)
         self._camera.set_config(self._camera_config)
 
-        return pics_path
+        return picture

@@ -8,7 +8,7 @@
 # Copyright (c) 2019-2020 Thibaud Demay
 # Show license file in root folder.
 
-from marshmallow_sqlalchemy import SQLAlchemySchema
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from sqlalchemy import Column, DateTime, Integer, String
 from sqlalchemy.sql import func
 
@@ -25,6 +25,6 @@ class Picture(db.Base):
     thumbnail_path = Column(String)
 
 
-class PictureSchema(SQLAlchemySchema):
+class PictureSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Picture

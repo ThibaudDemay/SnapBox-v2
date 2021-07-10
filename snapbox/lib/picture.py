@@ -20,3 +20,5 @@ class PictureManager:
         p = Picture(name=name, path=path, thumbnail_path=thumbnail_path)
         self.pics.append(p)
         self.__dbm.add(p)
+
+        return p
