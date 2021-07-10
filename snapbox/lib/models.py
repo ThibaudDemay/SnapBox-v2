@@ -12,7 +12,7 @@ from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from sqlalchemy import Column, DateTime, Integer, String
 from sqlalchemy.sql import func
 
-import snapbox.lib.database as db
+from lib import database as db
 
 
 class Picture(db.Base):

@@ -4,8 +4,8 @@ ErrorHandler
 
 from tornado.web import ErrorHandler
 
-import snapbox.exception as exception
-from snapbox.endpoint.base import BaseHandler
+import exception as exception
+from endpoint.base import BaseHandler
 
 
 class ErrorBadUriHandler(ErrorHandler, BaseHandler):

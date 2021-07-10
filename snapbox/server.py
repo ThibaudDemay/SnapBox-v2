@@ -9,15 +9,15 @@ from tornado.log import access_log
 from tornado.platform.asyncio import AnyThreadEventLoopPolicy
 from tornado.web import Application, RequestHandler
 
-from snapbox.endpoint.assets import AssetsHandler
-from snapbox.endpoint.config import ConfigHandler
-from snapbox.endpoint.error import ErrorBadUriHandler
-from snapbox.endpoint.pictures import PictureHandler, PicturesHandler
-from snapbox.endpoint.snap import SnapHandler
-from snapbox.lib.camera import Camera
-from snapbox.lib.common import ConfigFile, json2obj
-from snapbox.lib.database import DatabaseManager
-from snapbox.lib.picture import PictureManager
+from endpoint.assets import AssetsHandler
+from endpoint.config import ConfigHandler
+from endpoint.error import ErrorBadUriHandler
+from endpoint.pictures import PictureHandler, PicturesHandler
+from endpoint.snap import SnapHandler
+from lib.camera import Camera
+from lib.common import ConfigFile, json2obj
+from lib.database import DatabaseManager
+from lib.picture import PictureManager
 
 
 class SnapBoxServer(Application):

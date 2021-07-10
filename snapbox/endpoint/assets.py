@@ -4,8 +4,8 @@ import mimetypes
 import tornado.web
 from tornado.web import HTTPError
 
-from snapbox.endpoint.base import BaseHandler
-from snapbox.lib.models import Picture
+from endpoint.base import BaseHandler
+from lib.models import Picture
 
 
 class AssetsHandler(BaseHandler):

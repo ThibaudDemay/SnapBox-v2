@@ -3,7 +3,7 @@ import json
 import tornado.web
 from tornado.web import HTTPError
 
-from snapbox.endpoint.base import BaseHandler
+from endpoint.base import BaseHandler
 from snapbox.lib.models import Picture, PictureSchema
 
 picture_schema = PictureSchema()

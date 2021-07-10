@@ -14,7 +14,7 @@ import sqlalchemy as db
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.pool import SingletonThreadPool  # NullPool, QueuePool
 
-from snapbox.lib.common import ConfigFile
+from lib.common import ConfigFile
 
 Base = declarative_base()
 

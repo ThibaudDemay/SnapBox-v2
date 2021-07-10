@@ -5,8 +5,8 @@ import os
 from PIL import ExifTags, Image
 from tornado import gen
 
-from snapbox.endpoint.base import BaseHandler
-from snapbox.lib.models import PictureSchema
+from endpoint.base import BaseHandler
+from lib.models import PictureSchema
 
 picture_schema = PictureSchema()
 

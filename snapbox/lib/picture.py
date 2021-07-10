@@ -8,7 +8,7 @@
 # Copyright (c) 2019-2020 Thibaud Demay
 # Show license file in root folder.
 
-from snapbox.lib.models import Picture
+from lib.models import Picture
 
 
 class PictureManager:

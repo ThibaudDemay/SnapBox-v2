@@ -6,7 +6,7 @@ import tornado.web
 from tornado import gen, iostream
 from tornado.web import HTTPError
 
-from snapbox.endpoint.base import BaseHandler
+from endpoint.base import BaseHandler
 
 
 class ConfigHandler(BaseHandler):

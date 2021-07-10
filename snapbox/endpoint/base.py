@@ -7,7 +7,7 @@ from tornado.log import app_log
 from tornado.web import RequestHandler
 from tornado.websocket import WebSocketHandler
 
-import snapbox.exception as exception
+import exception as exception
 
 
 class BaseHandler(RequestHandler):
