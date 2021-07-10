@@ -1,4 +1,10 @@
 CHANGES
 =======
 
+* add var folder skeleton
+* add and update endpoint (asset, config, snap, pictures)
+* Correct lib for return picture and upgrade marshmallow
+* Update base project (req, setup)
+* Add Server app (with lib contains model, db, cam)
+* Update base repos config
 * Base config project
