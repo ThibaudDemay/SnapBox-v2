@@ -34,8 +34,12 @@ class BaseHandler(RequestHandler):
         return self.application.camera
 
     @property
+    def app_conf(self):
+        return self.application.app_conf
+
+    @property
     def save_path(self):
-        return self.application.save_path
+        return self.application.app_conf.save_path
 
     @property
     def pictures_path(self):

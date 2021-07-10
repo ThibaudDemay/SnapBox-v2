@@ -9,7 +9,10 @@ from tornado.log import access_log
 from tornado.platform.asyncio import AnyThreadEventLoopPolicy
 from tornado.web import Application, RequestHandler
 
+from snapbox.endpoint.assets import AssetsHandler
+from snapbox.endpoint.config import ConfigHandler
 from snapbox.endpoint.error import ErrorBadUriHandler
+from snapbox.endpoint.pictures import PictureHandler, PicturesHandler
 from snapbox.endpoint.snap import SnapHandler
 from snapbox.lib.camera import Camera
 from snapbox.lib.common import ConfigFile, json2obj
@@ -18,19 +21,19 @@ from snapbox.lib.picture import PictureManager
 
 
 class SnapBoxServer(Application):
-    def __init__(self):
+    def __init__(self, args):
         handlers = [
+            (r"^/config/?", ConfigHandler),
             (r"^/snap/?", SnapHandler),  # QUID DU DELAI
-            (r"^/config/?", None),
-            (r"^/pictures/?", None),
-            (r"^/pictures/(\d+)?", None),
-            (r"^/assets/(\d+)", None),  # RENVOIE THUMBNAIL (NEED REWORK ?)
+            (r"^/pictures/?", PicturesHandler),
+            (r"^/pictures/(\d+)?", PictureHandler),
+            (r"^/assets/(\d+)", AssetsHandler),  # RENVOIE THUMBNAIL (NEED REWORK ?)
             (r"^/upload/(?P<filename>.*)", None),  # /upload/<filename>
             (r"^/ws/?", None),  # SINON PASSAGE SUR WS POUR LE SNAP
         ]
         settings = dict(
-            autoreload=True,
-            debug=True,
+            autoreload=args["--autoreload"],
+            debug=args["--debug"],
             default_handler_class=ErrorBadUriHandler,
             default_handler_args=dict(status_code=404),
         )
@@ -54,13 +57,13 @@ class SnapBoxServer(Application):
 
         self.pictures_path = os.path.join(self.app_conf.save_path, self.pictures_folder)
         if not os.path.exists(self.pictures_path):
-            os.mkdir(self.pictures_path)
+            os.makedirs(self.pictures_path, exist_ok=True)
         self.thumbnails_path = os.path.join(self.app_conf.save_path, self.thumbnails_folder)
         if not os.path.exists(self.thumbnails_path):
-            os.mkdir(self.thumbnails_path)
+            os.makedirs(self.thumbnails_path, exist_ok=True)
         self.external_path = os.path.join(self.app_conf.save_path, self.external_folder)
         if not os.path.exists(self.external_path):
-            os.mkdir(self.external_path)
+            os.makedirs(self.external_path, exist_ok=True)
 
     def udev_init(self):
         context = Context()
@@ -74,7 +77,6 @@ class SnapBoxServer(Application):
         if device.action in ["add", "remove"]:
             logging.debug("background event {0.action}: {0.device_path}".format(device))
             self.camera.load()
-            self.c_frame.update_camera()
 
     def log_request(self, handler: RequestHandler) -> None:
         """Writes a completed HTTP request to the logs."""
@@ -134,6 +136,7 @@ def main():
     Options:
         -d --debug      Activate debug logging
         -s --stdout     Activate out on stdout
+        -a --autoreload Activate auto reload
         -h --help       Show this screen.
         -b --bidule <BIDULE>
         --version       Show version.
@@ -145,7 +148,7 @@ def main():
 
     # Needed for watchdog on FileSytem watching files changes
     asyncio.set_event_loop_policy(AnyThreadEventLoopPolicy())
-    app = SnapBoxServer()  # Replace by custom app
+    app = SnapBoxServer(args)  # Replace by custom app
     http_server = httpserver.HTTPServer(app)
     http_server.listen(app.http_conf.port)
     logging.info("Listening on http://%s:%s" % (app.http_conf.addr, app.http_conf.port))
