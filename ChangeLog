@@ -1,6 +1,10 @@
 CHANGES
 =======
 
+* Make styles
+* add pyc to gitignore
+* Changes import for local dev (not absolute import)
+* Update changelog
 * add var folder skeleton
 * add and update endpoint (asset, config, snap, pictures)
 * Correct lib for return picture and upgrade marshmallow
