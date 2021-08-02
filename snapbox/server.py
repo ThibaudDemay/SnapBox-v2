@@ -8,6 +8,7 @@ from endpoint.config import ConfigHandler
 from endpoint.error import ErrorBadUriHandler
 from endpoint.pictures import PictureHandler, PicturesHandler
 from endpoint.snap import SnapHandler
+from endpoint.websocket import ServerWebSocketHandler
 from lib.camera import Camera
 from lib.common import ConfigFile, json2obj
 from lib.database import DatabaseManager
@@ -28,7 +29,7 @@ class SnapBoxServer(Application):
             (r"^/pictures/(\d+)?", PictureHandler),
             (r"^/assets/(\d+)", AssetsHandler),  # RENVOIE THUMBNAIL (NEED REWORK ?)
             (r"^/upload/(?P<filename>.*)", None),  # /upload/<filename>
-            (r"^/ws/?", None),  # SINON PASSAGE SUR WS POUR LE SNAP
+            (r"^/ws/server?", ServerWebSocketHandler),  # SINON PASSAGE SUR WS POUR LE SNAP
         ]
         settings = dict(
             autoreload=args["--autoreload"],
