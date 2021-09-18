@@ -2,7 +2,7 @@ import json
 import logging
 import os
 
-from endpoint.base import BaseHandler
+from endpoint.base import BaseHandler, block_external_call
 from lib.models import PictureSchema
 from PIL import ExifTags, Image
 from tornado import gen
@@ -11,7 +11,9 @@ picture_schema = PictureSchema()
 
 
 class SnapHandler(BaseHandler):
+
     @gen.coroutine
+    @block_external_call
     def get(self):
         logging.debug("do_capture")
 

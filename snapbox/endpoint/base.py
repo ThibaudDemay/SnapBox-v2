@@ -9,6 +9,18 @@ from tornado.web import RequestHandler
 from tornado.websocket import WebSocketHandler
 
 
+def block_external_call(func):
+    def wrapper(*args, **kwargs):
+        handler = args[0]  # self
+        if handler.request.remote_ip in ["127.0.0.1"]:
+            return func(*args, **kwargs)
+        else:
+            handler.set_status(401)
+            handler.finish()
+
+    return wrapper
+
+
 class BaseHandler(RequestHandler):
     """
     Tornado Handler base of my other handler with integrate logging

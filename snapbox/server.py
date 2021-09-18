@@ -1,4 +1,5 @@
 import asyncio
+import json
 import logging
 import os
 
@@ -24,12 +25,13 @@ class SnapBoxServer(Application):
     def __init__(self, args):
         handlers = [
             (r"^/config/?", ConfigHandler),
-            (r"^/snap/?", SnapHandler),  # QUID DU DELAI
             (r"^/pictures/?", PicturesHandler),
             (r"^/pictures/(\d+)?", PictureHandler),
             (r"^/assets/(\d+)", AssetsHandler),  # RENVOIE THUMBNAIL (NEED REWORK ?)
             (r"^/upload/(?P<filename>.*)", None),  # /upload/<filename>
             (r"^/ws/server?", ServerWebSocketHandler),  # SINON PASSAGE SUR WS POUR LE SNAP
+            # only on localhost/127.0.0.1
+            (r"^/snap/?", SnapHandler),  # QUID DU DELAI
         ]
         settings = dict(
             autoreload=args["--autoreload"],
@@ -44,6 +46,7 @@ class SnapBoxServer(Application):
         self.pm = PictureManager(self.dbm)
         self.camera = Camera(self.pictures_path, self.thumbnails_path, self.pm)
         self.event_handler = None
+        self.websockets = list()
 
         self.udev_init()
 
@@ -74,9 +77,42 @@ class SnapBoxServer(Application):
         self.observer_usb.start()
 
     def usb_device_event(self, device):
-        if device.action in ["add", "remove"]:
-            logging.debug("background event {0.action}: {0.device_path}".format(device))
+        if device.action in ["add", "remove"] and device.device_type == "usb_interface":
+            logging.info("background event {device.action}: {device.device_path}".format(device=device))
             self.camera.load()
+            self.send_msg_to_websockets(
+                {
+                    "event": "update",
+                    "type": "state",
+                    "mutation": "camera/setIsConnected",
+                    "value": self.camera.get_connect(),
+                }
+            )
+
+    def add_websocket(self, websocket):
+        if websocket not in self.websockets:
+            self.websockets.append(websocket)
+            self.send_init_event_to_websocket(websocket)
+
+    def remove_websocket(self, websocket):
+        if websocket in self.websockets:
+            self.websockets.remove(websocket)
+
+    def send_init_event_to_websocket(self, websocket):
+        events = [
+            {
+                "event": "update",
+                "type": "state",
+                "mutation": "camera/setIsConnected",
+                "value": self.camera.get_connect(),
+            }
+        ]
+        for event in events:
+            websocket.write_message(json.dumps(event))
+
+    def send_msg_to_websockets(self, msg_json):
+        for websocket in self.websockets:
+            websocket.write_message(json.dumps(msg_json))
 
     def log_request(self, handler: RequestHandler) -> None:
         """Writes a completed HTTP request to the logs."""
