@@ -15,7 +15,7 @@ from endpoint.pictures import PictureHandler, PicturesHandler
 from endpoint.snap import SnapHandler
 from endpoint.websocket import ServerWebSocketHandler
 from lib.camera import Camera
-from lib.common import ConfigFile, json2obj
+from lib.common import ConfigFile, json2obj, obj2json
 from lib.database import DatabaseManager
 from lib.picture import PictureManager
 from log import AppLogFormatter
@@ -76,6 +76,13 @@ class SnapBoxServer(Application):
         self.external_path = os.path.join(self.app_conf.save_path, self.external_folder)
         if not os.path.exists(self.external_path):
             os.makedirs(self.external_path, exist_ok=True)
+
+    def save_config(self):
+        server_conf_file = ConfigFile(self.server_settings["server_conf"])
+        self.server_conf["app"] = obj2json(self.app_conf)
+        self.server_conf["http"] = obj2json(self.http_conf)
+        self.server_conf["admin"] = obj2json(self.admin_conf)
+        server_conf_file.write(self.server_conf)
 
     def udev_init(self):
         context = Context()

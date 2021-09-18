@@ -98,3 +98,11 @@ class ConfigFile(object):
 
 def json2obj(data):
     return type("new_dict", (object,), data)
+
+
+def obj2json(obj):
+    data = dict()
+    for k, d in obj.__dict__.items():
+        if not k.startswith("__"):
+            data[k] = d
+    return data
