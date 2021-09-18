@@ -21,7 +21,9 @@ def require_auth(func):
             try:
                 parts = auth.split()
                 token = parts[1]
-                jwt.decode(token, handler.admin_conf.JWT_SECRET, algorithms=handler.admin_conf.JWT_ALGORITHM)
+                jwt.decode(
+                    token, handler.admin_conf.JWT_SECRET, algorithms=handler.server_settings.get("JWT_ALGORITHM")
+                )
             except Exception:
                 raise exceptions.UnauthorizedError()
             return func(*args, **kwargs)

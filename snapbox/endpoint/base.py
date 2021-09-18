@@ -33,6 +33,10 @@ class BaseHandler(RequestHandler):
         return self.application.camera
 
     @property
+    def server_settings(self):
+        return self.application.server_settings
+
+    @property
     def app_conf(self):
         return self.application.app_conf
 

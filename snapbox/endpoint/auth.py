@@ -20,9 +20,11 @@ class AuthLoginHandler(BaseHandler):
             if password and password_encrypted == self.admin_conf.password:
                 payload = {
                     "admin": True,
-                    "exp": datetime.utcnow() + timedelta(seconds=self.admin_conf.JWT_EXP_DELTA_SECONDS),
+                    "exp": datetime.utcnow() + timedelta(seconds=self.server_settings.get("JWT_EXP_DELTA_SECONDS")),
                 }
-                jwt_token = jwt.encode(payload, self.admin_conf.JWT_SECRET, algorithm=self.admin_conf.JWT_ALGORITHM)
+                jwt_token = jwt.encode(
+                    payload, self.admin_conf.JWT_SECRET, algorithm=self.server_settings.get("JWT_ALGORITHM")
+                )
                 response = {"token": jwt_token}
                 self.write(response)
             else:
