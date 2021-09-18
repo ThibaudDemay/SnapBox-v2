@@ -40,3 +40,23 @@ class NotImplemented(BaseException):
 
     status = 501
     message = "Not implemented."
+
+
+class UnauthorizedError(BaseException):
+    status = 401
+    message = "Unauthorized Access."
+
+
+class AuthError(BaseException):
+    status = 401
+    message = "Auth error."
+
+
+class AuthWrongCredentialsError(BaseException):
+    status = 400
+    message = "Wrong credentials."
+
+
+class AuthUserNotFoundError(BaseException):
+    status = 404
+    message = "User not found."

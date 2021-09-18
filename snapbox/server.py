@@ -35,6 +35,8 @@ class SnapBoxServer(Application):
             (r"^/ws/server?", ServerWebSocketHandler),  # SINON PASSAGE SUR WS POUR LE SNAP
             # only on localhost/127.0.0.1
             (r"^/snap/?", SnapHandler),  # QUID DU DELAI
+            # AUTH
+            (r"^/auth/login/?", AuthLoginHandler),
         ]
         settings = dict(
             autoreload=args["--autoreload"],
@@ -61,6 +63,7 @@ class SnapBoxServer(Application):
         self.server_conf = ConfigFile(self.server_settings["server_conf"]).read()
         self.app_conf = json2obj(self.server_conf["app"])
         self.http_conf = json2obj(self.server_conf["http"])
+        self.admin_conf = json2obj(self.server_conf["admin"])
 
         self.pictures_path = os.path.join(self.app_conf.save_path, self.pictures_folder)
         if not os.path.exists(self.pictures_path):

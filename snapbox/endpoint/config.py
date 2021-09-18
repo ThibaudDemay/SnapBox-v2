@@ -2,6 +2,8 @@ import json
 import os
 import shutil
 
+import exceptions
+from decorators import require_auth
 from endpoint.base import BaseHandler
 from tornado import gen
 
@@ -50,3 +52,8 @@ class ConfigHandler(BaseHandler):
                 }
             )
         )
+
+    @gen.coroutine
+    @require_auth
+    def put(self):
+        raise exceptions.NotImplemented()

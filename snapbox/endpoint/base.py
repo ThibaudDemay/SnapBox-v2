@@ -2,23 +2,11 @@
 BaseHandler
 """
 
-import exception as exception
+import exceptions
 from tornado import gen
 from tornado.log import app_log
 from tornado.web import RequestHandler
 from tornado.websocket import WebSocketHandler
-
-
-def block_external_call(func):
-    def wrapper(*args, **kwargs):
-        handler = args[0]  # self
-        if handler.request.remote_ip in ["127.0.0.1"]:
-            return func(*args, **kwargs)
-        else:
-            handler.set_status(401)
-            handler.finish()
-
-    return wrapper
 
 
 class BaseHandler(RequestHandler):
@@ -47,6 +35,10 @@ class BaseHandler(RequestHandler):
     @property
     def app_conf(self):
         return self.application.app_conf
+
+    @property
+    def admin_conf(self):
+        return self.application.admin_conf
 
     @property
     def save_path(self):
@@ -81,7 +73,7 @@ class BaseHandler(RequestHandler):
         ``tornado.application`` logger).
         .. versionadded:: 3.1
         """
-        if isinstance(value, exception.BaseException):
+        if isinstance(value, exceptions.BaseException):
             self.exc_name = value.__class__.__name__
 
         else:
@@ -94,8 +86,8 @@ class BaseHandler(RequestHandler):
         """
         _, exc, _ = kwargs["exc_info"]
 
-        if not isinstance(exc, exception.BaseException):
-            exc = exception.BaseException()
+        if not isinstance(exc, exceptions.BaseException):
+            exc = exceptions.BaseException()
 
         self.set_status(exc.get_status())
         self.write(exc.get_message())
@@ -133,7 +125,7 @@ class WebSocketBaseHandler(WebSocketHandler):
         ``tornado.application`` logger).
         .. versionadded:: 3.1
         """
-        if isinstance(value, exception.BaseException):
+        if isinstance(value, exceptions.BaseException):
             self.exc_name = value.__class__.__name__
 
         else:
@@ -146,8 +138,8 @@ class WebSocketBaseHandler(WebSocketHandler):
         """
         _, exc, _ = kwargs["exc_info"]
 
-        if not isinstance(exc, exception.BaseException):
-            exc = exception.BaseException()
+        if not isinstance(exc, exceptions.BaseException):
+            exc = exceptions.BaseException()
 
         self.set_status(exc.get_status())
         self.write(exc.get_message())
