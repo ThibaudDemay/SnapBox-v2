@@ -18,11 +18,11 @@ def require_auth(func):
         handler = args[0]
         auth = handler.request.headers.get("Authorization")
         if auth:
-            parts = auth.split()
-            token = parts[1]
             try:
+                parts = auth.split()
+                token = parts[1]
                 jwt.decode(token, handler.admin_conf.JWT_SECRET, algorithms=handler.admin_conf.JWT_ALGORITHM)
-            except jwt.exceptions.ExpiredSignatureError:
+            except Exception:
                 raise exceptions.UnauthorizedError()
             return func(*args, **kwargs)
         else:
