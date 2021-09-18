@@ -50,6 +50,12 @@ class Camera:
         if self._hasCamInited:
             try:
                 self._camera_config = self._camera.get_config()
+
+                # OK, autofocus = gp.gp_widget_get_child_by_name(
+                # self._camera_config, 'autofocus')
+                # if OK >= gp.GP_OK:
+                #     autofocus.set_value("ON")
+                #     self.camera.set_config(self.config)
             except Exception as exc:
                 self._hasCamInited = False
                 logging.error("No Camera : %s" % str(exc))
