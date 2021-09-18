@@ -1,7 +1,9 @@
 import asyncio
+import hashlib
 import json
 import logging
 import os
+import secrets
 import sys
 
 from docopt import docopt
@@ -150,16 +152,36 @@ class SnapBoxServer(Application):
             log_method("%d %s %.2fms - Ok", handler.get_status(), handler._request_summary(), request_time)
 
 
+def generate_tokens(conf):
+    server_conf_file = ConfigFile(conf["server_conf"])
+    server_conf = server_conf_file.read()
+    server_conf["admin"]["JWT_SECRET"] = secrets.token_urlsafe(32)
+    server_conf_file.write(server_conf)
+
+
+def update_admin_password(conf):
+    server_conf_file = ConfigFile(conf["server_conf"])
+    server_conf = server_conf_file.read()
+    password = input("New password for admin user : ")
+    server_conf["admin"]["password"] = hashlib.sha512(password.encode("utf-8")).hexdigest()
+    server_conf_file.write(server_conf)
+
+
 def parse_args(args, conf):
-    log_path = conf.get("log_path", "server.log") if conf else "server.log"
-    settings = dict(
-        level=logging.INFO,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    )
+
+    if args["--generate-tokens"]:
+        generate_tokens(conf)
+        exit(0)
+
+    if args["--password-admin"]:
+        update_admin_password(conf)
+        exit(0)
+
     root = logging.getLogger()
     if args["--stdout"]:
         AppLogHandler = logging.StreamHandler(sys.stdout)
     else:
+        log_path = conf.get("log_path", "server.log") if conf else "server.log"
         AppLogHandler = logging.FileHandler(log_path, "a+")
 
     if args["--debug"]:
@@ -169,12 +191,12 @@ def parse_args(args, conf):
         AppLogHandler.setLevel(logging.INFO)
         root.setLevel(logging.INFO)
 
-    AppLogHandler.setFormatter(AppLogFormatter(settings["format"], logging_pretty=True))
+    AppLogHandler.setFormatter(
+        AppLogFormatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s", logging_pretty=True)
+    )
     root.addHandler(AppLogHandler)
 
-    # logging.basicConfig(**settings)
-
-    # logging.debug(args)
+    logging.debug(args)
 
 
 def main():
@@ -182,16 +204,19 @@ def main():
 
     Usage:
         snapbox-server [options]
+        snapbox-server -g | --generate-tokens
+        snapbox-server -p | --password-admin
         snapbox-server -h | --help
         snapbox-server --version
 
     Options:
-        -d --debug      Activate debug logging
-        -s --stdout     Activate out on stdout
-        -a --autoreload Activate auto reload
-        -h --help       Show this screen.
-        -b --bidule <BIDULE>
-        --version       Show version.
+        -d --debug              Activate debug logging.
+        -s --stdout             Activate out on stdout.
+        -a --autoreload         Activate auto reload.
+        -h --help               Show this screen.
+        -g --generate-tokens    Generate tokens secret of app.
+        -p --password-admin     Change admin password.
+        --version               Show version.
     """
     conf = ConfigFile().getSection("server")
     args = docopt(main.__doc__)
