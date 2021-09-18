@@ -2,9 +2,11 @@ import asyncio
 import json
 import logging
 import os
+import sys
 
 from docopt import docopt
 from endpoint.assets import AssetsHandler
+from endpoint.auth import AuthLoginHandler
 from endpoint.config import ConfigHandler
 from endpoint.error import ErrorBadUriHandler
 from endpoint.pictures import PictureHandler, PicturesHandler
@@ -14,6 +16,7 @@ from lib.camera import Camera
 from lib.common import ConfigFile, json2obj
 from lib.database import DatabaseManager
 from lib.picture import PictureManager
+from log import AppLogFormatter
 from pyudev import Context, Monitor, MonitorObserver
 from tornado import httpserver, ioloop
 from tornado.log import access_log
@@ -38,6 +41,7 @@ class SnapBoxServer(Application):
             debug=args["--debug"],
             default_handler_class=ErrorBadUriHandler,
             default_handler_args=dict(status_code=404),
+            websocket_ping_interval=60,
         )
         Application.__init__(self, handlers, **settings)
         self.server_settings = ConfigFile().getSection("server")
@@ -147,18 +151,27 @@ def parse_args(args, conf):
     log_path = conf.get("log_path", "server.log") if conf else "server.log"
     settings = dict(
         level=logging.INFO,
-        format="%(name)s - %(levelname)s - %(message)s",
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
-    if not args["--stdout"]:
-        settings["filemode"] = "a+"
-        settings["filename"] = log_path
+    root = logging.getLogger()
+    if args["--stdout"]:
+        AppLogHandler = logging.StreamHandler(sys.stdout)
+    else:
+        AppLogHandler = logging.FileHandler(log_path, "a+")
 
     if args["--debug"]:
-        settings["level"] = logging.DEBUG
+        AppLogHandler.setLevel(logging.DEBUG)
+        root.setLevel(logging.DEBUG)
+    else:
+        AppLogHandler.setLevel(logging.INFO)
+        root.setLevel(logging.INFO)
 
-    logging.basicConfig(**settings)
+    AppLogHandler.setFormatter(AppLogFormatter(settings["format"], logging_pretty=True))
+    root.addHandler(AppLogHandler)
 
-    logging.debug(args)
+    # logging.basicConfig(**settings)
+
+    # logging.debug(args)
 
 
 def main():
