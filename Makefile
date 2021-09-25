@@ -10,7 +10,7 @@ styles:
 	pflake8
 
 ## Check if styles was correct (black, isort, flake8)
-styles_check:
+styles-check:
 	black ./snapbox --check
 	isort ./snapbox --check-only
 	pflake8
