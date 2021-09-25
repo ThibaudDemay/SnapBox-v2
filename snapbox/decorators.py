@@ -5,7 +5,8 @@ import jwt
 def block_external_call(func):
     def wrapper(*args, **kwargs):
         handler = args[0]  # self
-        if handler.request.remote_ip in ["127.0.0.1"]:
+        debug = handler.application.settings.get('debug', False)
+        if handler.request.remote_ip in ["127.0.0.1"] or debug:
             return func(*args, **kwargs)
         else:
             raise exceptions.UnauthorizedError()
