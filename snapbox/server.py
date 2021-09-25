@@ -13,8 +13,8 @@ from endpoint.config import ConfigHandler
 from endpoint.error import ErrorBadUriHandler
 from endpoint.pictures import PictureHandler, PicturesHandler
 from endpoint.snap import SnapHandler
-from endpoint.websocket import ServerWebSocketHandler
 from endpoint.upload import UploadHandler
+from endpoint.websocket import ServerWebSocketHandler
 from lib.camera import Camera
 from lib.common import ConfigFile, json2obj, obj2json
 from lib.database import DatabaseManager
