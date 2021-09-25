@@ -21,7 +21,7 @@ from lib.database import DatabaseManager
 from lib.picture import PictureManager
 from log import AppLogFormatter
 from pyudev import Context, Monitor, MonitorObserver
-from tornado import httpserver, ioloop
+from tornado import httpserver, ioloop, gen
 from tornado.log import access_log
 from tornado.platform.asyncio import AnyThreadEventLoopPolicy
 from tornado.web import Application, RequestHandler
@@ -97,7 +97,7 @@ class SnapBoxServer(Application):
         if device.action in ["add", "remove"] and device.device_type == "usb_interface":
             logging.info("background event {device.action}: {device.device_path}".format(device=device))
             self.camera.load()
-            self.send_msg_to_websockets(
+            yield self.send_msg_to_websockets(
                 {
                     "event": "update",
                     "type": "state",
@@ -127,6 +127,7 @@ class SnapBoxServer(Application):
         for event in events:
             websocket.write_message(json.dumps(event))
 
+    @gen.coroutine
     def send_msg_to_websockets(self, msg_json):
         for websocket in self.websockets:
             websocket.write_message(json.dumps(msg_json))
