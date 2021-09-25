@@ -21,7 +21,7 @@ from lib.database import DatabaseManager
 from lib.picture import PictureManager
 from log import AppLogFormatter
 from pyudev import Context, Monitor, MonitorObserver
-from tornado import httpserver, ioloop, gen
+from tornado import gen, httpserver, ioloop
 from tornado.log import access_log
 from tornado.platform.asyncio import AnyThreadEventLoopPolicy
 from tornado.web import Application, RequestHandler
