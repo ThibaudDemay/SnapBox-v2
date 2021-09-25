@@ -14,6 +14,7 @@ from endpoint.error import ErrorBadUriHandler
 from endpoint.pictures import PictureHandler, PicturesHandler
 from endpoint.snap import SnapHandler
 from endpoint.websocket import ServerWebSocketHandler
+from endpoint.upload import UploadHandler
 from lib.camera import Camera
 from lib.common import ConfigFile, json2obj, obj2json
 from lib.database import DatabaseManager
@@ -33,7 +34,7 @@ class SnapBoxServer(Application):
             (r"^/pictures/?", PicturesHandler),
             (r"^/pictures/(\d+)?", PictureHandler),
             (r"^/assets/(\d+)", AssetsHandler),  # RENVOIE THUMBNAIL (NEED REWORK ?)
-            (r"^/upload/(?P<filename>.*)", None),  # /upload/<filename>
+            (r"^/upload/(?P<filename>.*)", UploadHandler),  # /upload/<filename>
             (r"^/ws/server?", ServerWebSocketHandler),  # SINON PASSAGE SUR WS POUR LE SNAP
             # only on localhost/127.0.0.1
             (r"^/snap/?", SnapHandler),  # QUID DU DELAI
