@@ -4,11 +4,13 @@ import urllib.parse
 
 from endpoint.base import BaseHandler
 from PIL import ExifTags, Image
+from lib.models import Picture, PictureSchema
 from tornado import gen
 from tornado.web import stream_request_body
 
 MAX_STREAMED_SIZE = 12 * 1024 * 1024  # 12Mo
 
+picture_schema = PictureSchema()
 
 @stream_request_body
 class UploadHandler(BaseHandler):
@@ -17,11 +19,7 @@ class UploadHandler(BaseHandler):
         yield super().prepare()
 
         self.filename = urllib.parse.unquote(self.path_kwargs["filename"])
-        print("filename : [%s]" % self.filename)
-        print("external_path : [%s]" % self.external_path)
         self.file_path = os.path.join(self.external_path, self.filename)
-        print(self.file_path)
-
         self.request.connection.set_max_body_size(MAX_STREAMED_SIZE)
 
     def data_received(self, chunk):
@@ -34,8 +32,17 @@ class UploadHandler(BaseHandler):
         self.action_name = "PostPicture"
 
         thumbnail_path = os.path.join(self.thumbnails_path, self.filename)
-        self.pm.addPicture(filename, self.file_path, thumbnail_path)
+        picture = self.pm.addPicture(filename, self.file_path, thumbnail_path)
         yield self.resize_picture()
+
+        yield self.application.send_msg_to_websockets(
+            {
+                "event": "update",
+                "type": "state",
+                "mutation": "pictures/newPictures",
+                "value": picture_schema.dump(picture),
+            }
+        )
 
         self.finish()
 
