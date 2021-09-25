@@ -8,3 +8,28 @@ SnapBox is software working in Single Board Computer (SBC) for pilot digital cam
 $ apt update
 $ apt install python3-pkgconfig ligphoto2-dev
 ```
+
+# Quickstart
+
+How to install :
+
+```
+$ cd /<folders>/snapbox-server
+$ python3 setup.py
+```
+
+Generate secret token :
+
+```bash
+$ snapbox-server --generate-tokens
+ou
+$ python3 server.py --generate-tokens
+```
+
+Set admin password :
+
+```
+$ snapbox-server --password-admin
+ou
+$ python3 server.py --password-admin
+```
