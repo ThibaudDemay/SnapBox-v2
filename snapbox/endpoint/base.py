@@ -62,12 +62,16 @@ class BaseHandler(RequestHandler):
 
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin", "*")
-        self.set_header("Access-Control-Allow-Headers", "x-requested-with, x-filename")
-        self.set_header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+        self.set_header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+        self.set_header("Access-Control-Allow-Methods", "PUT, POST, GET, OPTIONS")
 
     @gen.coroutine
     def prepare(self):
         pass
+
+    def options(self, *args, **kwargs):
+        self.set_status(204)
+        self.finish()
 
     def log_exception(self, typ, value, tb):
         """Customize logging of uncaught exceptions.
