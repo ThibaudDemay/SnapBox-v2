@@ -21,6 +21,15 @@ class SnapHandler(BaseHandler):
         filename = os.path.basename(picture.path)
         yield self.generate_thumbnail(filename, picture.path)
 
+        yield self.application.send_msg_to_websockets(
+            {
+                "event": "update",
+                "type": "state",
+                "mutation": "pictures/newPictures",
+                "value": picture_schema.dump(picture),
+            }
+        )
+
         dump = picture_schema.dump(picture)
         self.write(json.dumps(dump))
 
