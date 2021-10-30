@@ -70,6 +70,8 @@ class ConfigHandler(BaseHandler):
                 "camera_state": self.camera.get_connect(),
                 "camera_model": self.camera.get_model(),
                 "countdown": self.app_conf.countdown,
+                "countdown_min": self.server_settings.get("countdown_min"),
+                "countdown_max": self.server_settings.get("countdown_max"),
                 "preview": self.app_conf.preview,
             }
         )
