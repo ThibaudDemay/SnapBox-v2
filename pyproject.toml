@@ -1,6 +1,53 @@
-[tool.flake8]
-max-line-length = 120
-exclude = ".git, build/"
+[project]
+name = "snapbox-v2-server"
+version = "1.0.0"
+description = ""
+authors = [
+    {name = "Thibaud Demay", email = "demay.thibaud@gmail.com"},
+]
+dependencies = ["tornado", "docopt", "gphoto2", "sqlalchemy", "marshmallow", "marshmallow-sqlalchemy", "pyudev"]
+requires-python = ">=3.10"
+license = {text = "Proprietary"} # CHANGE THIS AFTER CHOOSING LICENSE
+readme = "README.md"
+
+[project.urls]
+repository = "https://github.com/ThibaudDemay/snapbox-v2-server"
+
+[project.optional-dependencies]
+[build-system]
+requires = ["pdm-pep517"]
+build-backend = "pdm.pep517.api"
+
+[project.scripts]
+snapbox-server = "snapbox.server:main"
+
+[tool.pdm]
+
+[tool.pdm.dev-dependencies]
+lint = [
+    "flake8>=4.0.1",
+    "black>=22.3.0",
+    "isort>=5.10.1",
+    "pyproject-flake8>=0.0.1a4",
+]
+
+[tool.pdm.scripts]
+styles = {shell = "bash scripts/styles.sh", help = "update styles, can be use in check mode with --check option"}
+snapbox-server = "python3 snapbox/server.py"
 
 [tool.black]
 line-length = 120
+
+[tool.flake8]
+max-line-length = 120
+exclude = [
+    ".git",
+    "__pycache__",
+    "__pypackages__"
+]
+
+[tool.isort]
+line_length = 120
+skip = [".git", "__pycache__", "__pypackages__"]
+src_paths = ["snapbox"]
+

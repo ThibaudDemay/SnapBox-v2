@@ -1,6 +1,8 @@
 *.log
 .vscode/
 build/
+dist/
 .eggs/
 *.egg-info/
 *.pyc
+__pypackages__/

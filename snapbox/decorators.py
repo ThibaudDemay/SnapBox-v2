@@ -1,5 +1,6 @@
-import exceptions
 import jwt
+
+from snapbox.exceptions import AuthError, UnauthorizedError
 
 
 def block_external_call(func):
@@ -9,7 +10,7 @@ def block_external_call(func):
         if handler.request.remote_ip in ["127.0.0.1"] or debug:
             return func(*args, **kwargs)
         else:
-            raise exceptions.UnauthorizedError()
+            raise UnauthorizedError()
 
     return wrapper
 
@@ -26,9 +27,9 @@ def require_auth(func):
                     token, handler.admin_conf.JWT_SECRET, algorithms=handler.server_settings.get("JWT_ALGORITHM")
                 )
             except Exception:
-                raise exceptions.UnauthorizedError()
+                raise UnauthorizedError()
             return func(*args, **kwargs)
         else:
-            raise exceptions.AuthError()
+            raise AuthError()
 
     return wrapper

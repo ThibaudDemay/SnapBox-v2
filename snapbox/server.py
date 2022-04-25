@@ -7,24 +7,25 @@ import secrets
 import sys
 
 from docopt import docopt
-from endpoint.assets import AssetsHandler
-from endpoint.auth import AuthLoginHandler
-from endpoint.config import ConfigHandler
-from endpoint.error import ErrorBadUriHandler
-from endpoint.pictures import PictureHandler, PicturesHandler
-from endpoint.snap import SnapHandler
-from endpoint.upload import UploadHandler
-from endpoint.websocket import ServerWebSocketHandler
-from lib.camera import Camera
-from lib.common import ConfigFile, json2obj, obj2json
-from lib.database import DatabaseManager
-from lib.picture import PictureManager
-from log import AppLogFormatter
 from pyudev import Context, Monitor, MonitorObserver
 from tornado import gen, httpserver, ioloop
 from tornado.log import access_log
 from tornado.platform.asyncio import AnyThreadEventLoopPolicy
 from tornado.web import Application, RequestHandler
+
+from snapbox.endpoint.assets import AssetsHandler
+from snapbox.endpoint.auth import AuthLoginHandler
+from snapbox.endpoint.config import ConfigHandler
+from snapbox.endpoint.error import ErrorBadUriHandler
+from snapbox.endpoint.pictures import PictureHandler, PicturesHandler
+from snapbox.endpoint.snap import SnapHandler
+from snapbox.endpoint.upload import UploadHandler
+from snapbox.endpoint.websocket import ServerWebSocketHandler
+from snapbox.lib.camera import Camera
+from snapbox.lib.common import ConfigFile, json2obj, obj2json
+from snapbox.lib.database import DatabaseManager
+from snapbox.lib.picture import PictureManager
+from snapbox.log import AppLogFormatter
 
 
 class SnapBoxServer(Application):

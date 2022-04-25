@@ -2,11 +2,12 @@ import logging
 import os
 import urllib.parse
 
-from endpoint.base import BaseHandler
-from lib.models import PictureSchema
 from PIL import ExifTags, Image
 from tornado import gen
 from tornado.web import stream_request_body
+
+from snapbox.endpoint.base import BaseHandler
+from snapbox.lib.models import PictureSchema
 
 MAX_STREAMED_SIZE = 12 * 1024 * 1024  # 12Mo
 

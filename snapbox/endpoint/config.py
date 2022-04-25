@@ -2,9 +2,10 @@ import json
 import os
 import shutil
 
-from decorators import require_auth
-from endpoint.base import BaseHandler
 from tornado import gen
+
+from snapbox.decorators import require_auth
+from snapbox.endpoint.base import BaseHandler
 
 
 class ConfigHandler(BaseHandler):

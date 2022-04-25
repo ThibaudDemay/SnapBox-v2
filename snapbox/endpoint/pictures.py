@@ -1,8 +1,9 @@
 import json
 
-from endpoint.base import BaseHandler
-from lib.models import Picture, PictureSchema
 from tornado.web import HTTPError
+
+from snapbox.endpoint.base import BaseHandler
+from snapbox.lib.models import Picture, PictureSchema
 
 picture_schema = PictureSchema()
 pictures_schema = PictureSchema(many=True)
@@ -22,4 +23,4 @@ class PictureHandler(BaseHandler):
             dump = picture_schema.dump(picture)
             self.write(json.dumps(dump))
         else:
-            raise HTTPError(404, u"Picture not found")
+            raise HTTPError(404, "Picture not found")

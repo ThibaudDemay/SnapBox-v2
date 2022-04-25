@@ -2,11 +2,12 @@
 BaseHandler
 """
 
-import exceptions
 from tornado import gen
 from tornado.log import app_log
 from tornado.web import RequestHandler
 from tornado.websocket import WebSocketHandler
+
+from snapbox.exceptions import BaseException
 
 
 class BaseHandler(RequestHandler):
@@ -81,7 +82,7 @@ class BaseHandler(RequestHandler):
         ``tornado.application`` logger).
         .. versionadded:: 3.1
         """
-        if isinstance(value, exceptions.BaseException):
+        if isinstance(value, BaseException):
             self.exc_name = value.__class__.__name__
 
         else:
@@ -94,8 +95,8 @@ class BaseHandler(RequestHandler):
         """
         _, exc, _ = kwargs["exc_info"]
 
-        if not isinstance(exc, exceptions.BaseException):
-            exc = exceptions.BaseException()
+        if not isinstance(exc, BaseException):
+            exc = BaseException()
 
         self.set_status(exc.get_status())
         self.write(exc.get_message())
@@ -133,7 +134,7 @@ class WebSocketBaseHandler(WebSocketHandler):
         ``tornado.application`` logger).
         .. versionadded:: 3.1
         """
-        if isinstance(value, exceptions.BaseException):
+        if isinstance(value, BaseException):
             self.exc_name = value.__class__.__name__
 
         else:
@@ -146,8 +147,8 @@ class WebSocketBaseHandler(WebSocketHandler):
         """
         _, exc, _ = kwargs["exc_info"]
 
-        if not isinstance(exc, exceptions.BaseException):
-            exc = exceptions.BaseException()
+        if not isinstance(exc, BaseException):
+            exc = BaseException()
 
         self.set_status(exc.get_status())
         self.write(exc.get_message())

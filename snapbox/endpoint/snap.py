@@ -2,11 +2,12 @@ import json
 import logging
 import os
 
-from decorators import block_external_call
-from endpoint.base import BaseHandler
-from lib.models import PictureSchema
 from PIL import ExifTags, Image
 from tornado import gen
+
+from snapbox.decorators import block_external_call
+from snapbox.endpoint.base import BaseHandler
+from snapbox.lib.models import PictureSchema
 
 picture_schema = PictureSchema()
 

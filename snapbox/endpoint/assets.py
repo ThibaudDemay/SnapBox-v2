@@ -1,8 +1,9 @@
 import mimetypes
 
-from endpoint.base import BaseHandler
-from lib.models import Picture
 from tornado.web import HTTPError
+
+from snapbox.endpoint.base import BaseHandler
+from snapbox.lib.models import Picture
 
 
 class AssetsHandler(BaseHandler):
@@ -19,4 +20,4 @@ class AssetsHandler(BaseHandler):
             except Exception as exc:
                 print(exc)
         else:
-            raise HTTPError(404, u"Picture not found")
+            raise HTTPError(404, "Picture not found")

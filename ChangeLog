@@ -1,6 +1,28 @@
 CHANGES
 =======
 
+* Add countdown min max in conf api
+* Send notify on websocket when take picture
+* correct makefile typo
+* make styles
+* update upload handler add ws msg for frontend
+* websocket msg add gen.coroutine decorator
+* make styles
+* Add upload handler
+* Update base handler endpoint
+* Add debug options ignore block\_external\_call decorator
+* Update readme.md
+* add config update (server write file and endpoint)
+* Move JWT settings in snabox server settings
+* Generalize exception for require\_auth
+* Add generate secret and update password to command
+* Add login jwt + decorator for jwt some typos
+* add logging enhancement
+* add comment about autofocus in camera
+* Update websocket handler
+* decorator for block access from external usage
+* Update changelog
+* Add websocket
 * Make styles
 * add pyc to gitignore
 * Changes import for local dev (not absolute import)

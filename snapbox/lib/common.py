@@ -4,7 +4,7 @@ import logging
 import os
 import sys
 
-from lib import default_settings_cfgfile
+from snapbox.lib import default_settings_cfgfile
 
 
 class ConfigFile(object):

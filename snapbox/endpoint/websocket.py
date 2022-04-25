@@ -1,6 +1,6 @@
 import logging
 
-from endpoint.base import WebSocketBaseHandler
+from snapbox.endpoint.base import WebSocketBaseHandler
 
 
 class ServerWebSocketHandler(WebSocketBaseHandler):

@@ -6,7 +6,7 @@ SnapBox is software working in Single Board Computer (SBC) for pilot digital cam
 
 ```bash
 $ apt update
-$ apt install python3-pkgconfig ligphoto2-dev
+$ apt install python3-pip python3-pkgconfig python3-setuptools libgphoto2-dev
 ```
 
 # Quickstart

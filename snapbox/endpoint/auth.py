@@ -2,10 +2,11 @@ import hashlib
 import json
 from datetime import datetime, timedelta
 
-import exceptions
 import jwt
-from endpoint.base import BaseHandler
 from tornado import gen
+
+from snapbox.endpoint.base import BaseHandler
+from snapbox.exceptions import AuthUserNotFoundError, AuthWrongCredentialsError
 
 
 class AuthLoginHandler(BaseHandler):
@@ -28,6 +29,6 @@ class AuthLoginHandler(BaseHandler):
                 response = {"token": jwt_token}
                 self.write(response)
             else:
-                raise exceptions.AuthWrongCredentialsError()
+                raise AuthWrongCredentialsError()
         else:
-            raise exceptions.AuthUserNotFoundError()
+            raise AuthUserNotFoundError()
